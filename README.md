@@ -1,50 +1,43 @@
-# React + TypeScript + Vite
+# Wobot Assessment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This Assessment is based on Build UI from Wireframe.
 
-Currently, two official plugins are available:
+## React + TypeScript + Vite
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Currently using React Typescript Vite enable High performance Using HMR
 
-## Expanding the ESLint configuration
+## Steps to install and run the app
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+clone the app
 
-- Configure the top-level `parserOptions` property like this:
+### Run command installing packages
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+yarn
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### for dev
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+yarn dev
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### for production
+
+yarn build
+
+### Packages
+
+#### Tanstack Table
+
+#### MUI
+
+#### Axios
+
+### hooks
+
+Created two hooks useData, postData to separate concerns and reuse all over the app
+
+### Reducers
+
+Two Reducers for Dialog box and for Snackbar
+
+### Theme
+
+Implemented one theme for consistent look and feel
