@@ -11,13 +11,10 @@ import {
 import { getColumn } from './camera.columns';
 import { useDeferredValue, useEffect, useState } from 'react';
 import {
-  Select,
-  MenuItem,
   TextField,
   SelectChangeEvent,
   Button,
   InputAdornment,
-  OutlinedInput,
   Box,
   Dialog,
   DialogTitle,
@@ -26,18 +23,10 @@ import {
   DialogActions,
   Snackbar,
 } from '@mui/material';
-import {
-  KeyboardArrowLeftOutlined,
-  KeyboardArrowRightOutlined,
-  KeyboardDoubleArrowLeftOutlined,
-  KeyboardDoubleArrowRightOutlined,
-  LocationOnOutlined,
-  RssFeedOutlined,
-  SearchOutlined,
-} from '@mui/icons-material';
+import { SearchOutlined } from '@mui/icons-material';
 import { Action, useConfirm } from '../../reducers/ConfirmDialog';
 import { usePopup } from '../../reducers/popup';
-import { CameraTable } from './CameraTable';
+import { TableContainer } from './TableContainer';
 
 export type Meta = {
   dispatch: React.Dispatch<Action>;
@@ -71,16 +60,11 @@ export function Camera() {
       columnFilters,
     },
     getCoreRowModel: getCoreRowModel(),
-
     getPaginationRowModel: getPaginationRowModel(),
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnFiltersChange: setColumnFilters,
   });
-  const { pageIndex, pageSize } = cameraTable.getState().pagination;
-  const totalRows = cameraTable.getFilteredRowModel().rows.length;
-  const locations = Array.from(new Set(data.map((camera) => camera.location)));
-  const status = Array.from(new Set(data.map((camera) => camera.status)));
 
   const handleLocationChange = (e: SelectChangeEvent<string>) => {
     const value = e.target.value;
@@ -137,138 +121,12 @@ export function Camera() {
       {loading ? (
         <p>Loading..</p>
       ) : (
-        <Box
-          sx={{
-            backgroundColor: 'white',
-            padding: '1rem',
-            margin: '1rem',
-            height: 'calc(100% - 21%)',
-            overflowY: 'auto',
-          }}
-        >
-          <Box display={'flex'} gap={1}>
-            <Select
-              name="camera-locations"
-              id="camera-location"
-              onChange={handleLocationChange}
-              displayEmpty
-              defaultValue={''}
-              sx={{
-                minWidth: '12rem',
-                '& .MuiInputBase-input': {
-                  paddingBlock: '0.5rem',
-                },
-              }}
-              input={
-                <OutlinedInput
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <LocationOnOutlined />
-                    </InputAdornment>
-                  }
-                />
-              }
-            >
-              <MenuItem value="">Locations</MenuItem>
-              {locations.map((location, index) => (
-                <MenuItem key={index} value={location}>
-                  {location}
-                </MenuItem>
-              ))}
-            </Select>
-
-            <Select
-              name="camera-status"
-              id="camera-status"
-              onChange={handleStatusChange}
-              displayEmpty
-              defaultValue={''}
-              sx={{
-                paddingBlock: 0,
-                minWidth: '12rem',
-                '& .MuiInputBase-input': {
-                  paddingBlock: '0.5rem',
-                },
-              }}
-              input={
-                <OutlinedInput
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <RssFeedOutlined />
-                    </InputAdornment>
-                  }
-                />
-              }
-            >
-              <MenuItem value="">Status</MenuItem>
-              {status.map((location, index) => (
-                <MenuItem key={index} value={location}>
-                  {location}
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
-          <Box
-            style={{
-              overflowY: 'auto',
-              height: 'calc(100% - 120px)',
-            }}
-          >
-            <CameraTable cameraTable={cameraTable} />
-          </Box>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'end',
-              gap: '0.25rem',
-              paddingInline: '2rem',
-            }}
-          >
-            <Button
-              onClick={() => cameraTable.firstPage()}
-              disabled={!cameraTable.getCanPreviousPage()}
-            >
-              <KeyboardDoubleArrowLeftOutlined />
-            </Button>
-            <Button
-              onClick={() => cameraTable.previousPage()}
-              disabled={!cameraTable.getCanPreviousPage()}
-            >
-              <KeyboardArrowLeftOutlined />
-            </Button>
-            <Button
-              color="primary"
-              onClick={() => cameraTable.nextPage()}
-              disabled={!cameraTable.getCanNextPage()}
-            >
-              <KeyboardArrowRightOutlined />
-            </Button>
-            <Button
-              onClick={() => cameraTable.lastPage()}
-              disabled={!cameraTable.getCanNextPage()}
-            >
-              <KeyboardDoubleArrowRightOutlined />
-            </Button>
-            <p style={{ display: 'flex', alignItems: 'center' }}>
-              <span>
-                {pageIndex * pageSize + 1} - {(pageIndex + 1) * pageSize} of{' '}
-                {totalRows}
-              </span>
-            </p>
-            <Select
-              value={cameraTable.getState().pagination.pageSize}
-              onChange={(e) => {
-                cameraTable.setPageSize(Number(e.target.value));
-              }}
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <MenuItem key={pageSize} value={pageSize}>
-                  {pageSize}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-        </Box>
+        <TableContainer
+          cameraTable={cameraTable}
+          data={data}
+          handleLocationChange={handleLocationChange}
+          handleStatusChange={handleStatusChange}
+        />
       )}
       <Dialog open={state?.open}>
         <DialogTitle>
